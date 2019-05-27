@@ -1,4 +1,4 @@
-# MySQL RandStr
+# MySQL randstr
 
 This little project serves two purposes: to create an efficient random
 string generator, the output of which will be used to create salt
