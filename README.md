@@ -28,9 +28,17 @@ and why this might not be the case.
 
 ## Installation Test
 
-This UDF will eventually be needed for all SchemaFramework installations.
-For servers that host multiple SchemaFramework applications, it shouldn't
-be necessary to reinstall this UDF, but there is no way that I can detect
-whether or not stored function has been loaded.  I can see if the library
-exists in the plugins directory, but the existence of the library does not
-ensure that it is being used by a stored function.
+The only way I can figure out to test if this function has been installed
+is to attempt to call it from the command line and checking the **mysql**
+exit code.
+
+Here is an example that makes a testing function, followed by an invocation
+of the testing function that emits the status:
+
+~~~sh
+randstr_installed() { mysql -e "SELECT make_randstr(20)" >/dev/null; }
+
+if randstr_installed; then echo "installed"; else echo "NOT installed"; fi;
+~~~
+
+
