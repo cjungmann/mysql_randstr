@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# -*- mode:makefile -*-
+
+declare output=Makefile
+
+>${output}
+
+echo "MYSQL_COMPILE_FLAGS = $(mysql_config --cflags)"       >> ${output}
+echo "PLUGIN_PATH = $( mysql -BN -e SELECT\ @@plugin_dir )" >> ${output}
+
+
+(cat << 'EOF'
+CFLAGS = -fPIC -Wall -m64 -shared ${MYSQL_COMPILE_FLAGS} -I.
+CC = gcc
+TARGET = libmake_randstr.so
+FNAME = make_randstr
+
+all: ${TARGET}
+
+${TARGET} : randstr.c
+	$(CC) ${CFLAGS} -o ${TARGET} randstr.c
+
+install:
+	cp -f ${TARGET} "${PLUGIN_PATH}"
+	service mysql restart
+	mysql -e "DROP FUNCTION IF EXISTS ${FNAME}"
+	mysql -e "CREATE FUNCTION ${FNAME} RETURNS STRING SONAME '${TARGET}'"
+	mysql -e "SELECT ${FNAME}(20)"
+
+uninstall:
+	mysql -e "DROP FUNCTION IF EXISTS ${FNAME}"
+	rm "${PLUGIN_PATH}${TARGET}"
+
+EOF
+ ) >> ${output}
