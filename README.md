@@ -19,7 +19,7 @@ following commands:
 - sudo make install
 
 The install target copies the shared library file to the plugin_lib,
-then DROP IS EXIST the function before CREATE FUNCTION to load the function.
+then DROP IF EXISTS the function before CREATE FUNCTION to load the function.
 
 The CREATE FUNCTION is called without specifying a database, and it then seems
 to be available in all databases.  It doesn't seem like it should work this
