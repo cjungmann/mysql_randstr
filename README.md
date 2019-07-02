@@ -41,4 +41,16 @@ randstr_installed() { mysql -e "SELECT make_randstr(20)" >/dev/null; }
 if randstr_installed; then echo "installed"; else echo "NOT installed"; fi;
 ~~~
 
+## Other Reference
 
+MySQL includes a source file **udf_example.cc.gz** that illustrates programming
+strategies for various function types.  To study the contents, copy to a working
+directory and extract the contents.  The following example makes an assumption
+about where the file resides.  Adjust your commands if your copy of the file
+resides elsewhere.
+
+~~~sh
+$ cp /usr/share/doc/libmysqlclient-dev/examples/udf_example.cc.gz .
+$ gzip -d udf_example.cc.gz
+$ emacs udf_example.cc
+~~~
